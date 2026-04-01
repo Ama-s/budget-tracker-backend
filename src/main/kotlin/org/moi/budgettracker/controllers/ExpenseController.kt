@@ -47,7 +47,7 @@ class ExpenseController(
         return ResponseEntity.ok(response)
     }
 
-    @PutMapping("/{id}") // hasn't been implemented yet
+    @PutMapping("/{id}") // has not been implemented yet
     fun updateExpense(
         @PathVariable id: Long,
         @RequestBody request: ExpenseRequest
