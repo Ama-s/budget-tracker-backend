@@ -1,5 +1,5 @@
 # Use Java 17 base image
-FROM eclipse-temurin:17-jdk-alpine AS build
+FROM eclipse-temurin:21-jdk-alpine AS build
 
 # Set working directory
 WORKDIR /app
@@ -16,7 +16,7 @@ RUN chmod +x gradlew && ./gradlew build -x test
 
 
 # Use a smaller image for runtime
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
