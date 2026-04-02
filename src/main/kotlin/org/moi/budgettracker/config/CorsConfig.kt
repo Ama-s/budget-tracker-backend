@@ -11,7 +11,8 @@ class CorsConfig : WebMvcConfigurer {
         registry.addMapping("/**")  // Apply to all endpoints
             .allowedOrigins(
                 "http://localhost:3000",
-                "http://localhost:3001"
+                "http://localhost:3001",
+                "https://budget-tracker-ui.vercel.app/"
             )
             .allowedMethods(
                 "GET",
