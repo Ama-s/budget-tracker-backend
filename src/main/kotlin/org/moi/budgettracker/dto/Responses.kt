@@ -4,11 +4,11 @@ import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-//data class UserResponse(
-//    val id: Long,
-//    val username: String,
-//    val currency: String
-//)
+data class AuthResponse(
+    val username: String,
+    val fullName: String,
+    val email: String
+)
 
 data class ExpenseResponse(
     val id: Long,

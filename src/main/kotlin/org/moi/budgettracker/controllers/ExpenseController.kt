@@ -2,63 +2,84 @@ package org.moi.budgettracker.controllers
 
 import org.moi.budgettracker.dto.ExpenseRequest
 import org.moi.budgettracker.dto.ExpenseResponse
-import org.moi.budgettracker.entities.User
+import org.moi.budgettracker.repository.UserRepository
+import org.moi.budgettracker.security.CustomUserDetails
 import org.moi.budgettracker.service.ExpenseService
 import org.springframework.data.domain.Page
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/expenses")
 class ExpenseController(
-    private val expenseService: ExpenseService
+    private val expenseService: ExpenseService,
+    private val userRepository: UserRepository
 ) {
-    private val defaultUser = User(id = 1, username = "public")
 
     @PostMapping
-    fun createExpense(@RequestBody request: ExpenseRequest): ResponseEntity<ExpenseResponse> {
-        val response = expenseService.createExpense(defaultUser, request)
+    fun createExpense(
+        @AuthenticationPrincipal userDetails: CustomUserDetails,
+        @RequestBody request: ExpenseRequest
+    ): ResponseEntity<ExpenseResponse> {
+        val user = userDetails.user
+        val response = expenseService.createExpense(user, request)
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
     @GetMapping
     fun getExpenses(
+        @AuthenticationPrincipal userDetails: CustomUserDetails,
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "50") size: Int
     ): ResponseEntity<Page<ExpenseResponse>> {
-        val response = expenseService.getExpenses(defaultUser, page, size)
+        val user = userDetails.user
+        val response = expenseService.getExpenses(user, page, size)
         return ResponseEntity.ok(response)
     }
 
     @GetMapping("/search") // hasn't been implemented yet
     fun searchExpenses(
+        @AuthenticationPrincipal userDetails: CustomUserDetails,
         @RequestParam keyword: String,
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "50") size: Int
     ): ResponseEntity<Page<ExpenseResponse>> {
-        val response = expenseService.searchExpenses(defaultUser, keyword, page, size)
+        val user = userDetails.user
+        val response = expenseService.searchExpenses(user, keyword, page, size)
         return ResponseEntity.ok(response)
     }
 
     @GetMapping("/{id}")  // might not be useful in the frontend
-    fun getExpense(@PathVariable id: Long): ResponseEntity<ExpenseResponse> {
-        val response = expenseService.getExpenseById(defaultUser, id)
+    fun getExpense(
+        @AuthenticationPrincipal userDetails: CustomUserDetails,
+        @PathVariable id: Long
+    ): ResponseEntity<ExpenseResponse> {
+        val user = userDetails.user
+        val response = expenseService.getExpenseById(user, id)
         return ResponseEntity.ok(response)
     }
 
     @PutMapping("/{id}") // has not been implemented yet
     fun updateExpense(
+        @AuthenticationPrincipal userDetails: CustomUserDetails,
         @PathVariable id: Long,
         @RequestBody request: ExpenseRequest
     ): ResponseEntity<ExpenseResponse> {
-        val response = expenseService.updateExpense(defaultUser, id, request)
+        val user = userDetails.user
+        val response = expenseService.updateExpense(user, id, request)
         return ResponseEntity.ok(response)
     }
 
     @DeleteMapping("/{id}") // hasn't been implemented yet
-    fun deleteExpense(@PathVariable id: Long): ResponseEntity<Void> {
-        expenseService.deleteExpense(defaultUser, id)
+    fun deleteExpense(
+        @AuthenticationPrincipal userDetails: CustomUserDetails,
+        @PathVariable id: Long
+    ): ResponseEntity<Void> {
+        val user = userDetails.user
+        expenseService.deleteExpense(user, id)
         return ResponseEntity.noContent().build()
     }
 }

@@ -23,8 +23,7 @@ WORKDIR /app
 # Copy the built jar from build stage
 COPY --from=build /app/build/libs/*.jar app.jar
 
-# Expose port (Render will set this via $PORT)
-EXPOSE 8080
+EXPOSE 8085
 
 # Run the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Dserver.address=0.0.0.0", "-Dserver.port=8085", "-jar", "app.jar"]

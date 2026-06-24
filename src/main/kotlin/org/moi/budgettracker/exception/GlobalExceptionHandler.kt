@@ -56,4 +56,11 @@ class GlobalExceptionHandler {
         )
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error)
     }
+
+    @ExceptionHandler(IllegalArgumentException::class)
+    fun handleIllegalArgument(ex: IllegalArgumentException): ResponseEntity<Map<String, String>> {
+        return ResponseEntity
+            .badRequest()
+            .body(mapOf("error" to (ex.message ?: "Invalid request")))
+    }
 }

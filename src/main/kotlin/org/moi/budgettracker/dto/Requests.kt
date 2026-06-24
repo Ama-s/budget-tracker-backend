@@ -2,17 +2,13 @@ package org.moi.budgettracker.dto
 
 import java.math.BigDecimal
 import java.time.LocalDateTime
-//
-//data class RegisterRequest(
-//    val username: String,
-//    val password: String,
-//    val currency: String = "NGN"
-//)
-//
-//data class LoginRequest(
-//    val username: String,
-//    val password: String
-//)
+
+data class RegisterRequest(
+    val username: String,
+    val email: String,
+    val password: String,
+    val fullName: String
+)
 
 data class BudgetRequest(
     val monthYear: String,
