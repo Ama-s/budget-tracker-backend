@@ -71,8 +71,7 @@ class SecurityConfig() {
         config.allowedOrigins = listOf(
             "http://localhost:3000",
             "http://localhost:3001",
-            "https://budget-tracker-ui.vercel.app",
-            "https://budget-tracker-api.fly.dev"
+            "https://budget-tracker-ui.vercel.app"
         )
         config.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
         config.allowedHeaders = listOf("*")
